@@ -1,0 +1,71 @@
+<div class="main-container">
+    <div class="pt-2 ml-3 cursor-pointer dark-purple" (click)="loadUserCardsComponent()">
+         <fa-icon [icon]="icons.goBack" class="mr-2"></fa-icon>
+         <span>Back to users</span>
+     </div>
+     <div class="border m-3" *ngIf="user" >
+         <div class="d-flex p-3 bg-white">
+             <div>
+                 <img src="{{user?.imageUrl}}" class="img-fluid rounded-circle mr-3" width="60px">
+             </div>
+             <div style="padding-right: 100px;">
+                 <h6 class="mb-1">{{user?.name}}</h6>
+                 <p class="font-size-12 text-muted mb-0">{{user?.designation}}</p>
+                 <div class="d-flex align-items-center ">
+                   <i class="fa fa-thumbs-up fa-x mr-2 cursor-ptr" aria-hidden="true" style="color:#00cc6a; font-size:x-large" ></i><span class="mr-3">{{user.likes}}</span>
+                   <i class="fa fa-thumbs-down fa-x mr-2 cursor-ptr" aria-hidden="true" style="color:red; font-size:x-large" ></i><span>{{user.dislikes}}</span>
+                 </div>
+             </div>
+             <div class="d-flex">
+                 <div class="bg-light d-flex flex-column align-items-center p-3 mx-2 min-width-150">
+                     <div class="pb-2">{{user.questionsAsked}}</div>
+                     <div class="font-size-11 text-muted">Questions Asked</div>
+                 </div>
+                 <div class="bg-light d-flex flex-column align-items-center p-3 mx-2 min-width-150">
+                     <div class="pb-2">{{user.questionsAnswered}}</div>
+                     <div class="font-size-11 text-muted">Questions Answered</div>
+                 </div>
+                 <div class="bg-light d-flex flex-column align-items-center p-3 mx-2 min-width-150">
+                     <div class="pb-2">{{user.questionsSolved}}</div>
+                     <div class="font-size-11 text-muted">Questions Solved</div>
+                 </div>
+             </div>
+         </div>
+         <div class="bg-white d-flex align-items-center font-size-14 border-top">
+             <a class="text-dark px-4 py-3 user-info-hover "
+             [ngClass]="{'user-info-active': selectedTab==0}"
+             (click)='selectedTab=0'
+             >
+                 All Questions
+             </a>
+             <a class="text-muted px-4 py-3 user-info-hover"
+             (click)='selectedTab=1'
+             [ngClass]="{'user-info-active': selectedTab==1}"
+             >
+                 Answered
+             </a>
+         </div>
+     </div>
+</div>
+
+<div class="container-fluid h-100 py-2 homequestioncontainer" *ngIf="user">
+    <div class=" row ml-2 mr-2 p-0" >
+        <div class=" col-7 px-0 questionbox ">
+            <app-questions [questions]='selectedTab == 0 ? user.questions : user.answeredQuestions ' (selectedQuestionId)="receiveQuestionId($event)" ></app-questions>
+        </div>
+        <div class=" col-5 px-0  questiondetail ">
+            
+            <div *ngIf="!questionSelected" class="bg-light h-100  d-flex flex-row align-items-center justify-content-center  ">
+                <div class="text-center text-secondary arrow-icon">
+                     <i class="fas fa-arrow-left "></i>
+                     <div class="font-size-28 text-center">
+                          Select a Question to See Details
+                     </div>
+                </div>
+           </div>
+           <div  class="right-container" *ngIf="questionSelected">
+                <app-question-with-answers [questionId]=currentQuestionId ></app-question-with-answers>
+           </div>
+        </div>
+    </div>
+</div>

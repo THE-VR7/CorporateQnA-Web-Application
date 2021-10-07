@@ -1,0 +1,21 @@
+
+
+<!-- <router-outlet> -->
+
+<!-- Header at the topmost part of the page  -->
+<app-header></app-header>
+
+<div class=" container-fluid p-0 d-flex flex-row jsutify-content-start "  >
+
+    <div class=" sidecontainer position-fixed bg-dark ">
+        <app-side-nav></app-side-nav>
+    </div>
+
+    <div class="maincontainer w-100 bg-light h-100  pb-2" >
+        <!-- This is to load the desired component from sidenav -->
+        <router-outlet>
+
+        </router-outlet>
+    </div>
+
+</div>

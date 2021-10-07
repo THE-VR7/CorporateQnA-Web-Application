@@ -1,0 +1,113 @@
+
+<div class=" container-fluid filtercontainer d-flex flex-row justify-content-start align-items-center" >
+    <!-- Search Filter -->
+    <div class="main">
+        <label for="sel0" class="mb-1 small">Keywords:</label>
+        <!-- Actual search box -->
+        <div class="form-group has-search" id="sel0">
+          <span class="fa fa-search form-control-feedback"></span>
+          <!--   -->
+          <input type="text" class="form-control" [(ngModel)]='searchText' (keyup)='filterQuestions()'  placeholder="Search">
+        </div>
+    </div>    
+
+    <!-- Category Filter -->
+    <div class="form-group wt-20 ml-3">
+        <label for="sel1" class="mb-1 small">Category:</label>
+        <select class="form-control cursor-pointer filter" id="sel1" [(ngModel)]="categoryId" (change)='filterQuestions()'>
+          <option value='0' selected class=" ">All</option>
+          <option *ngFor="let category of categories;let i = index;" [value]='category.id' class=" ">{{category.name}}</option>
+        </select>
+    </div>
+    <!-- Show Filter -->
+    <div class="form-group wt-20  ml-3">
+    <label for="sel2" class="mb-1 small">Show:</label>
+    <!--  -->
+    <select class="form-control cursor-pointer filter" [(ngModel)]="showFilter" (change)='filterQuestions()'  id="sel2">
+     <option value="all" class=" ">All</option>  
+     <option *ngFor="let show of showFilters;let i = index;" [value]='show' >{{show}}</option>
+    </select>
+    </div>
+        <!-- Sort By Filtser -->
+    <div class="form-group wt-20 ml-3">
+    <label for="sel3" class="mb-1 small">Sort By:</label>
+    <!--  -->
+    <select class="form-control cursor-pointer filter" [(ngModel)]="sortByFilter" (change)='filterQuestions()' id="sel3" >
+     <option value="all" class=" ">All</option>      
+     <option *ngFor="let sort of sortByFilters;let i = index;" [value]='sort' >{{sort}}</option>
+    </select>
+    </div>  
+    
+    <a  class="ml-4 mt-2 mr-4 text-secondary text-decoration-none cursor-pointer"
+    (click)="resetFilters()"
+    >
+        <i class="fas fa-redo mr-1"></i>
+        Reset
+    </a>
+    
+    <a class="btn btncolor ml-5 mt-2 bold px-3 pt-1 pb-2 text-white text-decoration-none" (click)="openModal(modal)">+Question</a>
+</div>
+
+
+<div class="container-fluid h-100 py-2 homequestioncontainer" >
+    <div class=" row ml-2 mr-2 p-0" >
+        <div class=" col-7 px-0 questionbox ">
+            <app-questions [questions]="filteredQuestionList" (selectedQuestionId)="receiveQuestionId($event)" ></app-questions>
+        </div>
+        <div class=" col-5 px-0  questiondetail ">
+            
+            <div *ngIf="!questionSelected" class="bg-light h-100  d-flex flex-row align-items-center justify-content-center  ">
+                <div class="text-center text-secondary arrow-icon">
+                     <i class="fas fa-arrow-left "></i>
+                     <div class="font-size-28 text-center">
+                          Select a Question to See Details
+                     </div>
+                </div>
+           </div>
+           <div  class="right-container" *ngIf="questionSelected">
+                <app-question-with-answers [questionId]=currentQuestionId ></app-question-with-answers>
+           </div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #modal>
+    <div>
+         <div class="d-flex modal-header add-heading bg-secondary text-white">
+              <div>
+                   Add Question
+              </div>
+              <button type="button" class="close ml-auto pr-2" aria-label="Close">
+                   <span aria-hidden="true" class="text-white" (click)="closeModal()">&times;</span>
+              </button>
+         </div>
+      <form [formGroup]="addQuestionForm">
+        <div class="modal-body row">
+              <div class="form-group col-sm-9">
+                   <label>Question</label>
+                   <input type="text" class="form-control" placeholder="Enter Your Question" style="font-size: 13px;" formControlName="question">
+              </div>
+              <div class="form-group col-sm-9">
+                   <label>Description</label>
+                   <div class="NgxEditor__Wrapper mb-3">
+                        <ngx-editor [editor]="editor" editable="true" [placeholder]="html" formControlName="description">                                
+                             </ngx-editor>        
+                        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>                                 
+                   </div>
+              </div>
+              <div class="form-group col-sm-9">
+                   <label for="keywords" class="home-options-heading">Category</label>
+                   <select class="form-control col-sm-9" id=category  formControlName="Id">
+                        <option [ngValue]=0 selected>ALL</option>
+                        <option *ngFor="let category of categories" [ngValue]="category.id">{{category.name}}</option>
+                   </select>
+              </div>
+              <div class="ml-auto pt-5 mt-3 mr-3">
+                   <button type="button" class="btn px-3 bg-secondary text-white" (click)="closeModal()">Cancel</button>
+                   <button class="btn px-3 ml-2 btncolor text-white" (click)="addQuestion()">Post</button>
+              </div>               
+        </div>
+      </form>
+    </div>
+</ng-template>

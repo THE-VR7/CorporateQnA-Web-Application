@@ -1,0 +1,16 @@
+<img src="/assets/Images/kekaImage.JPG" class=" my-0 kekaimage " alt="keka">
+<ul class="list-group sidelist">
+    <li class="py-4 d-flex flex-column
+        position-relative justify-content-center align-items-center
+        " [ngClass]="{'active': selectedListItemIndex == 0}"
+        >
+        <!-- <i class="fa fa-comment-o ft-20 text-white-50" aria-hidden="true"></i> -->
+        <i class='far fa-comment-alt ft-20 text-white-50'></i>
+        <a id="forumItem" class=" text-decoration-none stretched-link align-self-center text-white-50"
+        [routerLink]="['/forum']"
+        (click)="selectedListItemIndex=0"
+        >
+            Forum
+        </a> 
+    </li>
+</ul>

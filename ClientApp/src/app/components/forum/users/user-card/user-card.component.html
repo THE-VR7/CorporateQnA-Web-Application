@@ -1,0 +1,49 @@
+
+<div class=" container-fluid filtercontainer d-flex flex-row justify-content-start align-items-center" >
+    <!-- Search Filter -->
+    <div class="wt-40 ml-2">
+        <label for="sel0" class="mb-1 small">Users:</label>
+        <!-- Actual search box -->
+        <div class="form-group has-search" id="sel0">
+          <span class="fa fa-search form-control-feedback"></span>
+          <input type="text" class="form-control" [(ngModel)]='searchText' (keyup)='filterUsersBySearch()' placeholder="Search">
+        </div>
+    </div>    
+    
+</div>
+
+
+<div class="d-flex container-fluid categorycontainer pt-4 px-1 pb-3 flex-row flex-wrap justify-content-start align-items-start  " >
+    <div class="bg-white border m-1 cursor-pointer usercard" (click)="routeToUserDetails(user.id)" *ngFor="let user of filterUsers;let i=index;" >
+        <div class="d-flex p-3">
+            <div>
+                <img src="{{user.imageUrl}}" class="rounded-circle mr-3" width="40px">
+            </div>
+            <div>
+                <h6>{{user.name}}</h6>
+                <p class="font-size-12  mb-1 app-color">{{user.designation}}</p>
+                <!-- <p class="font-size-12  app-color">{{user.company}}</p> -->
+                <div class="d-flex align-items-center font-size-14">
+                    <!-- (click)="likeUser()"  (click)="dislikeUser()"-->
+                  <i class="fa fa-thumbs-up fa-x mr-2 cursor-ptr" aria-hidden="true" style="color:#00cc6a; font-size:x-large" ></i><span class="mr-3">{{user.likes}}</span>
+                  <i class="fa fa-thumbs-down fa-x mr-2 cursor-ptr" aria-hidden="true" style="color:red; font-size:x-large" ></i><span>{{user.dislikes}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex border-top">
+            <div class="d-flex flex-column align-items-center border-right p-3">
+                <div>{{user.questionsAsked}}</div>
+                <div class="font-size-11 text-muted">Questions Asked</div>
+            </div>
+            <div class="d-flex flex-column align-items-center border-right p-3">
+                <div>{{user.questionsAnswered}}</div>
+                <div class="font-size-11 text-muted">Questions Answered</div>
+            </div>
+            <div class="d-flex flex-column align-items-center p-3">
+                <div>{{user.questionsSolved}}</div>
+                <div class="font-size-11 text-muted">Questions Solved</div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,95 @@
+
+    <div class="container-fluid  px-4 py-3" *ngIf="questionProfile != null || questionProfile != undefined" >
+
+        <div class=" d-flex flex-row justify-content-between align-items-center  ">
+            <div class="w-50 d-flex flex-row justify-content-start align-items-center ">
+                <img [src] = 'questionProfile.user.imageUrl || "/assets/Images/defaultuser.jpg" '  class="userheaderimage rounded-circle " alt="">
+                <h6 class="ml-3 ">{{questionProfile.user.name}} </h6>
+                <h6 class=" ml-3 text-secondary font-weight-normal ">{{questionProfile.questionTime}}</h6>
+            </div>
+            <a class=" text-decoration-none cursor-pointer "
+            *ngIf="questionProfile.user.id != user.id" 
+            [ngClass]="{'text-danger': questionReported.includes(questionProfile.id),'text-secondary': !questionReported.includes(questionProfile.id)}" 
+            (click)="reportQuestion(questionProfile.id)"
+            >
+                <fa-icon [icon]="icons.exclamation"></fa-icon>
+                <span class=" ml-3" *ngIf="!questionReported.includes(questionProfile.id)" >Report this </span>
+                <span class=" ml-3" *ngIf="questionReported.includes(questionProfile.id)">Reported </span>
+            </a>
+        </div>
+        <h6 class="mt-3 mb-2 text-dark ">{{questionProfile.headline}}</h6>
+        <p class=" text-black-50 " [innerHTML]="questionProfile.description" ></p>
+    </div>
+
+    <h4 class=" container-fluid bg-greylight py-2" *ngIf="questionProfile != null || questionProfile != undefined" >Answers ({{questionProfile.numberOfAnswers}})</h4>
+
+    <div class=" answer-list overflow-scroll w-100  " *ngIf="questionProfile != null || questionProfile != undefined"  >
+        
+        <div class="container-fluid  px-4 py-3 mb-3 " *ngFor="let answer of questionProfile.answers;let i=index;" >
+            <div class=" d-flex flex-row justify-content-between align-items-center  ">
+                <div class="w-50 d-flex flex-row justify-content-start align-items-center ">
+                    <img [src]='answer.imageUrl' class="userheaderimage rounded-circle " alt="">
+                    <h6 class="ml-3 ">{{answer.name}}</h6>
+                    <h6 class=" ml-3  text-secondary font-weight-normal ">{{answer.answerTime}}</h6>
+                </div>
+                <div class=" d-flex justify-content-around align-items-center">
+                    <a class=" cursor-pointer text-decoration-none " (click)='likeAnswer(true,i)'   *ngIf=" checkIfUserLiked(answer.id) == -1"
+                    >
+                        <i class="fas fa-thumbs-up  text-secondary "></i>
+                        <span class=" text-black-50 ml-1">{{answer.likes}} </span>
+                    </a>
+                    <a class=" cursor-pointer text-decoration-none" (click)='likeAnswer(false,i)' *ngIf=" checkIfUserLiked(answer.id) != -1" >
+                        <i class="fas fa-thumbs-up  text-success "></i>
+                        <span class=" text-black-50 ml-1">{{answer.likes}} </span>
+                    </a>
+                    <a class="cursor-pointer text-decoration-none ml-3" (click)='dislikeAnswer(true,i)' *ngIf=" checkIfUserDisliked(answer.id) == -1" >
+                        <i class="fas fa-thumbs-down  text-secondary  "></i>
+                        <span class=" text-black-50 ml-1">{{answer.dislikes}} </span>
+                    </a>
+                    <a class="cursor-pointer text-decoration-none ml-3" (click)='dislikeAnswer(false,i)' *ngIf=" checkIfUserDisliked(answer.id) != -1">
+                        <i class="fas fa-thumbs-down  text-danger  "></i>
+                        <span class=" text-black-50 ml-1">{{answer.dislikes}} </span>
+                    </a>
+                </div>
+            </div>
+            <p class=" text-black-50 ml-5 small " [innerHTML]="answer.description" >
+                <!-- {{answer.description}} -->
+            </p>
+            <!-- Custom CheckBoxes -->
+            <div class="checkdiv ml-5 bg-light w-50 d-flex flex-row align-items-center"
+            *ngIf="user.id == questionProfile.user.id"
+            >
+                <label class="checkbox-container d-flex flex-row align-items-center ">
+                    <input type="checkbox" class="input-checkbox parent-checkbox "
+                    *ngIf="user.id == questionProfile.user.id"
+                    [disabled]='user.id != questionProfile.user.id'
+                    (click)="markAsBestSolution(answer.id,i)"
+                    [checked]='answer.isBestSolution'
+                    >
+                    <span class="checkmark "></span>
+                    <h6 class="ml-2 font-weight-normal cursor-pointer" *ngIf="user?.id == questionProfile?.user?.id" (click)="markAsBestSolution(answer.id,i)" >Mark as Best Solution</h6>
+                    <!-- <h6 class="ml-2 font-weight-normal " *ngIf="user.id != questionProfile.user.id" >Marked as Best Solution</h6> -->
+                </label>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="form-group col-12 w-100 position-relative editor">
+        <form [formGroup]="answerForm" class="answer-form">
+            <div class="NgxEditor__Wrapper ">
+                <div class="d-flex justify-content-end">
+                    <fa-icon [icon]="icons.expand" size="2x" class="pl-2 cursor-pointer" style="color:  rgb(131,131,131);"
+                        (click)="expandEditor()"></fa-icon>
+                </div>
+                <ngx-editor [editor]="editor" editable="true" [placeholder]="html" formControlName="editorContent"
+                    [ngClass]="{'expand-editor':expand}">
+                </ngx-editor>
+                <div class="d-flex">
+                    <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"> </ngx-editor-menu>
+                    <fa-icon [icon]="icons.send" class="ml-auto mr-2 cursor-pointer" size="2x"
+                        style="color:  rgb(131,131,131);" (click)="addAnswer()"></fa-icon>
+                </div>
+            </div>
+        </form>
+    </div>

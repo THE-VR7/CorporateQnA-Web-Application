@@ -1,0 +1,48 @@
+<div class="container-fluid questioncard bg-white  pb-0" >
+    <div class="row questioncard" *ngFor="let question of questions;let i=index;">
+        <!-- [src]='question.userImage == null ? /assets/Images/defaultuser.jpg : question.userImage' -->
+        <div [ngClass]="{'resolved-question': question.isSolved}"></div>
+        <div class="col-1 d-flex flex-column  align-items-center justify-content-start "
+        [ngClass]="{'mt-3': question.isSolved , 'mt-2': !question.isSolved}"
+        >
+            <img
+            [src] = 'question.userImage || "/assets/Images/defaultuser.jpg" '
+            class="userheaderimage rounded-circle " alt="">
+            <p class="d-flex flex-column justify-content-center align-items-center  mt-4" 
+            [ngClass]="
+                {
+                    'cursor-pointer' : question?.userId != user?.id ,
+                    'cursor-disable' : question?.userId == user?.id
+                }"
+            (click)="addVote(question.id,i)"
+            >
+                <i class="fas fa-arrow-up " 
+                [ngClass]="
+                {
+                    'text-secondary': !userVotes.includes(question.id) , 
+                    'text-success': userVotes.includes(question.id) 
+                }" ></i>
+                <span>{{question.votes}}</span>
+            </p>
+        </div>
+        <div class="col-11 position-relative "
+        [ngClass]="{'mt-3': question.isSolved , 'mt-2': !question.isSolved}"
+        >
+            <p class=" mb-2 stretched-link cursor-pointer" (click)="selectQuestion(question.id,i)" >{{question.headline}}</p>
+            <p class=" text-black-50 small" [innerHTML]="question.description"></p>
+            <div class="d-flex flex-row justify-content-between align-items-center" >
+                <div class=" text-secondary d-flex flex-row justify-content-start w-50" >
+                    <p class="small">
+                        <i class="fas fa-eye mr-2 "></i>
+                        <span class="">{{question.views}} views</span>
+                    </p>
+                    <p class=" answerstab  px-2 ml-5 small " >{{question.numberOfAnswers}} Answers</p>
+                </div>
+                <p class=" align-self-start small text-secondary" *ngIf="!question.isSolved else resolved">{{question.questionTime}}</p>
+                <ng-template #resolved>
+                    <span class="text-success font-weight-500">Resolved</span>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

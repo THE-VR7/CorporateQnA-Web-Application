@@ -1,0 +1,16 @@
+<ul class="topnav nav navbar navbar-expand-lg">
+    <li class=" position-relative px-3 " [ngClass]="{'active1' : selectedListIndex == 0}" >
+        <a class=" stretched-link text-decoration-none " (click)="selectedListIndex=0" [routerLink]="['/forum/home']">home</a>
+    </li>
+    <li class=" position-relative px-3" [ngClass]="{'active1' : selectedListIndex == 1}" >
+        <a class=" stretched-link text-decoration-none" (click)="selectedListIndex=1" [routerLink]="['/forum/categories']">CATEGORIES</a>
+    </li>
+    <li class=" position-relative px-3" [ngClass]="{'active1' : selectedListIndex == 2}" >
+        <a class=" stretched-link text-decoration-none" (click)="selectedListIndex=2" [routerLink]="['/forum/users']">USERS</a>
+    </li>
+  </ul>
+
+
+  <router-outlet>
+
+  </router-outlet>

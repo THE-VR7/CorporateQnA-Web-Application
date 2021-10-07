@@ -1,0 +1,81 @@
+<div class=" container-fluid filtercontainer d-flex flex-row justify-content-around align-items-center" >
+    <!-- Search Filter -->
+    <div class="wt-40 ml-2">
+        <label for="sel0" class="mb-1 small">Categories:</label>
+        <!-- Actual search box -->
+        <div class="form-group has-search" id="sel0">
+          <span class="fa fa-search form-control-feedback"></span>
+          <input type="text" class="form-control" [(ngModel)]='searchText' (keyup)='filterCategories()' placeholder="Search">
+        </div>
+    </div>    
+
+    
+    <!-- Show Filter  -->
+    <div class="form-group w-25  ml-3">
+        <label for="sel2" class="mb-1 small">Show:</label>
+        <select class="form-control cursor-pointer filter" [(ngModel)]="showFilter" (change)='filterCategories()' id="sel2">
+            <option value="popular" class=" ">Popular</option>
+            <option *ngFor="let show of showFilters;let i = index;" >{{show}}</option>
+        </select>
+    </div>
+     
+    
+    <a class="ml-4 mt-2 mr-4 text-secondary text-decoration-none cursor-pointer" (click)="resetFilters()">
+        <i class="fas fa-redo mr-1"></i>
+        Reset
+    </a>
+    
+    <a class="btn btncolor ml-5 mt-2 bold px-3 pt-1 pb-2 text-white text-decoration-none" (click)="openModal(categorymodal)" >+Category</a>
+</div>
+
+
+<div class=" d-flex container-fluid categorycontainer pt-4 px-4 pb-3 flex-row flex-wrap justify-content-start align-items-start " >
+
+    <div class="cardtab px-3 pt-3 pb-2 " *ngFor="let category of filteredCategories;let i = index;" >
+        <div class=" d-flex justify-content-between flex-row">
+            <h6 class=" align-self-center" >{{category.name}}</h6>
+            <h6 class=" text-secondary small font-weight-normal align-self-start " >{{category.tags}}</h6>
+        </div>
+        <p class=" text-secondary ">
+            {{category.description}}
+        </p> 
+        <p class=" text-secondary small ">
+            Tagged {{category.tagsThisWeek}} This Week, {{category.tagsThisMonth}} This month
+        </p>
+    </div>
+
+</div>
+
+<ng-template #categorymodal>
+	<div>
+		<div class="d-flex modal-header add-heading bg-secondary text-white">
+			<div>
+				Add Category
+			</div>
+			<button type="button" class="close ml-auto pr-2" aria-label="Close">
+				<span aria-hidden="true" class="text-white" (click)="closeModal()">&times;</span>
+			</button>
+		</div>
+	</div>
+	<form [formGroup]="addCategoryForm">
+		<div class="modal-body row">
+			<div class="form-group col-sm-9">
+				<label>Category Name</label>
+				<input type="text" class="form-control" placeholder="Enter Category Name" 
+					formControlName="name">
+			</div>
+			<div class="form-group col-sm-9">
+				<label>Description</label>
+				<textarea class="form-control" rows="3" placeholder="Enter your text here.."
+					formControlName="description">
+             		</textarea>
+			</div>
+			<div class="mt-5 pt-5">
+				<div class="ml-auto pt-5 mt-3 mr-3">
+					<button type="button" class="btn px-3 bg-secondary text-white" (click)="closeModal()">Cancel</button>
+					<button class="btn px-3 ml-2 btncolor text-white" (click)="addCategory()">Post</button>
+				</div>
+			</div>			
+		</div>
+	</form>
+</ng-template>
